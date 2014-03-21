@@ -121,7 +121,7 @@ module.exports.findDocs = function (d, n, profiler, cb) {
       return cb();
     }
 
-    d.find('bench', { 'docNumber': order[i] }, function (err, cursor, count) {
+    d.find('bench', { docNumber: order[i] }, function (err, cursor, count) {
       cursor.next();
       if ( count !== 1 || cursor.field('docNumber') !== order[i]) { return cb('One find didnt work'); }
       cursor.close();
@@ -162,7 +162,7 @@ module.exports.findDocsWithIn = function (d, n, profiler, cb) {
       return cb();
     }
 
-    d.find('bench', { 'docNumber': { '$in': ins[i] } }, function (err, cursor, count) {
+    d.find('bench', { docNumber: { $in: ins[i] } }, function (err, cursor, count) {
       if (count !== arraySize) { return cb('One find didnt work'); }
       cursor.close();
       executeAsap(function () {
@@ -191,7 +191,7 @@ module.exports.findOneDocs = function (d, n, profiler, cb) {
       return cb();
     }
 
-    d.findOne('bench', { 'docNumber': order[i] }, function (err, doc) {
+    d.findOne('bench', { docNumber: order[i] }, function (err, doc) {
       if (!doc || doc.docNumber !== order[i]) { return cb('One find didnt work'); }
       executeAsap(function () {
         runFrom(i + 1);
@@ -222,7 +222,7 @@ module.exports.updateDocs = function (d, n, profiler, cb) {
     }
 
     // Will not actually modify the document but will take the same time
-    d.update('bench', { 'docNumber': order[i] , '$upsert': { 'docNumber': order[i] } }, function (err, count) {
+    d.update('bench', { docNumber: order[i] , $upsert: { docNumber: order[i] } }, function (err, count) {
       if (err) { return cb(err); }
       if (count !== 1) { return cb('One update didnt work'); }
       executeAsap(function () {
@@ -256,10 +256,10 @@ module.exports.removeDocs = function (d, n, profiler, cb) {
       return cb();
     }
 
-    d.find('bench', { 'docNumber': order[i], '$dropall' : true }, {'$onlycount': true}, function (err, cursor, count) {
+    d.find('bench', { docNumber: order[i], $dropall : true }, {$onlycount: true}, function (err, cursor, count) {
       if (err) { return cb(err); }
       if (count !== 1) { return cb('One remove didnt work'); }
-      d.save('bench', { 'docNumber': order[i] }, function (err, oids) {   // We need to reinsert the doc so that we keep the collection's size at n
+      d.save('bench', { docNumber: order[i] }, function (err, oids) {   // We need to reinsert the doc so that we keep the collection's size at n
                                                            // So actually we're calculating the average time taken by one insert + one remove
         executeAsap(function () {
           runFrom(i + 1);
