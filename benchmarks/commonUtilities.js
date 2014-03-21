@@ -222,7 +222,7 @@ module.exports.updateDocs = function (d, n, profiler, cb) {
     }
 
     // Will not actually modify the document but will take the same time
-    d.find('bench', { 'docNumber': order[i] , '$upsert': { 'docNumber': order[i] } }, {'$onlycount': true}, function (err, cursor, count) {
+    d.update('bench', { 'docNumber': order[i] , '$upsert': { 'docNumber': order[i] } }, function (err, count) {
       if (err) { return cb(err); }
       if (count !== 1) { return cb('One update didnt work'); }
       executeAsap(function () {
