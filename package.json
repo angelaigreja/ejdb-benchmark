@@ -1,0 +1,17 @@
+{
+  "name": "ejdb-benchmark",
+  "description": "Benchmark of basic CRUD with EJDB, using the same benchmarks that test NeDB",
+  "version": "0.0.1",
+  "homepage": "http://taffydb.com/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/angelaigreja/ejdb-benchmark.git"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "exec-time": "0.0.2",
+    "commander": "~1.2.0",
+    "ejdb": "*"
+  },
+  "devDependencies": {}
+}
